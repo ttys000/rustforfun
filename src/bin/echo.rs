@@ -5,30 +5,32 @@ fn main() {
 }
 
 fn my_solution() {
-    let mut args = env::args().skip(1);
+    let mut args = env::args().skip(1).peekable();
 
     let mut res = String::new();
 
-    let mut trailing_newline = true;
-    match args.nth(0) {
+    let trailing_newline = match args.peek() {
         Some(s) => {
             if s == "-n" {
-                res.insert_str(0, args.next().unwrap().as_str());
-                trailing_newline = false;
+                args.next();
+                false
             } else {
-                res.insert_str(0, s.as_str());
+                true
             }
         }
-        None => {}
+        None => true,
     };
 
     for arg in args {
-        res.insert(res.len(), ' ');
-        res.insert_str(res.len(), arg.as_str());
+        res.push_str(arg.as_str());
+        res.push(' ');
     }
 
+    // removes the last ' '
+    res.pop();
+
     if trailing_newline {
-        res.insert(res.len(), '\n');
+        res.push('\n');
     }
 
     print!("{}", res);
