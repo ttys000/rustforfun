@@ -1,9 +1,31 @@
 use std::env;
 
+use clap::{App, Arg};
+
 fn main() {
-    my_solution();
+    let matches = App::new("echo")
+        .version("0.1.0")
+        .author("Pengyu Li <lipengyux@gmail.com>")
+        .about("Rust echo")
+        .arg(
+            Arg::with_name("text")
+                .value_name("TEXT")
+                .help("Input text")
+                .required(true)
+                .min_values(1),
+        )
+        .arg(
+            Arg::with_name("omit_newline")
+                .short("n")
+                .help("Do not print trailing newline")
+                .takes_value(false),
+        )
+        .get_matches();
+
+    println!("{:#?}", matches);
 }
 
+#[allow(dead_code)]
 fn my_solution() {
     let mut args = env::args().skip(1).peekable();
 
